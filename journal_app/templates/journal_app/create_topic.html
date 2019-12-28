@@ -1,0 +1,9 @@
+{% extends 'journal_app/base.html' %}
+{% block content %}
+  <p>Create a new topic:</p>
+  <form action="{% url 'create_topic'%}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">create topic</button>
+  </form>
+{% endblock content %}
