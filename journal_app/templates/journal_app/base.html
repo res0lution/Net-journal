@@ -1,5 +1,12 @@
 <nav>
   <a href="{% url 'index' %}">Net journal</a>
   <a href="{% url 'topics' %}">Topics</a>
+  {% if user.is_authenticated %}
+    Hello, {{user.username}}
+    <a href="{% url 'logout' %}">Log out</a>
+  {% else %}
+    <a href="{% url 'register' %}">Register</a>
+    <a href="{% url 'login' %}">Log in</a>
+  {% endif %}
 </nav>
 {% block content %}{% endblock content %}

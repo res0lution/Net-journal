@@ -1,0 +1,10 @@
+{% extends 'journal_app/base.html' %}
+
+{% block content %}
+  <form action="{% url 'register'%}" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button name="submit">Register</button>
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+{% endblock content %}

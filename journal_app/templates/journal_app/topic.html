@@ -9,6 +9,7 @@
     <li>
       <p>{{entry.date|date:'M d, Y H:i'}}</p>
       <p>{{entry.text|linebreaks}}</p>
+      <p><a href="{% url 'edit_entry' entry.id %}">Edit entry</a></p>
     </li>
   {% empty %}
     <li>There are no entries, add yours here</li>

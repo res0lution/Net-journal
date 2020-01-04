@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .forms import TopicForm, EntryForm
-from .models import Topic
+from .models import Topic, Entry
 
 # Create your views here.
 
@@ -10,12 +13,14 @@ def index(request):
     """Home page"""
     return render(request, 'journal_app/index.html')
 
+@login_required
 def topics(request):
     """Output topics lest"""
     ordered_topics = Topic.objects.order_by('date')
     context = {'topics': ordered_topics}
     return render(request, 'journal_app/topics.html', context)
 
+@login_required
 def topic(request, topic_id):
     """Output all entries of current topic"""
     current_topic = Topic.objects.get(id=topic_id)
@@ -23,6 +28,7 @@ def topic(request, topic_id):
     context = {'topic': current_topic, 'entries': ordered_entries}
     return render(request, 'journal_app/topic.html', context)
 
+@login_required
 def create_topic(request):
     """Define new topic"""
     if request.method != 'POST':
@@ -38,6 +44,7 @@ def create_topic(request):
     context = {'form': form}
     return render(request, 'journal_app/create_topic.html', context)
 
+@login_required
 def create_entry(request, topic_id):
     """Add new entry to particular topic"""
     choosen_topic = Topic.objects.get(id=topic_id)
@@ -56,6 +63,43 @@ def create_entry(request, topic_id):
 
     context = {'topic': choosen_topic, 'form': form}
     return render(request, 'journal_app/create_entry.html', context)
+
+@login_required
+def edit_entry(request, entry_id):
+    """Edit existing entry"""
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+
+    if request.method != 'POST':
+        #Fill form via data from current entry
+        form = EntryForm(instance=entry)
+    else:
+        #Send data
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('topic', args=[topic.id]))
+        
+    context = {'entry': entry, 'topic': topic, 'form': form}
+    return render(request, 'journal_app/edit_entry.html', context)
+
+def register(request):
+    """Registration"""
+    if request.method != 'POST':
+        form = UserCreationForm()
+    else:
+        form = UserCreationForm(data=request.POST)
+
+        if form.is_valid():
+            new_user = form.save()
+            auth_user = authenticate(username=new_user.username, password=request.POST['password1'])
+            login(request, auth_user)
+            return HttpResponseRedirect(reverse('index'))
+    
+    context = {'form': form}
+    return render(request, 'journal_app/register.html', context)
+
+        
 
 
     

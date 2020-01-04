@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^topics/(?P<topic_id>\d+)$', views.topic, name='topic'), #Details topic page
     url(r'^create_topic/$', views.create_topic, name='create_topic'), #Create topic page
     url(r'^create_entry/(?P<topic_id>\d+)/$', views.create_entry, name='create_entry'), #Create entry page
-    url(r'^edit_entry/(?P<topic_id>\d+)/$', views.edit_entry, name='edit_entry'), #Create topic page
+    url(r'^edit_entry/(?P<entry_id>\d+)/$', views.edit_entry, name='edit_entry'), #Edit entry page
+    url(r'^register/$', views.register, name='register'),
 ]
 
