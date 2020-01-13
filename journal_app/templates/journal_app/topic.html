@@ -1,16 +1,27 @@
 {% extends 'journal_app/base.html' %}
 
-{% block content %}
+{% block header %}
   <h2>Topic: {{topic}}</h2>
+{% endblock header %}
+
+{% block content %}
   <h3>Entries:</h3>
   <p><a href="{% url 'create_entry' topic.id %}">Create new entry</a></p>
   <ul>
   {% for entry in entries %}
-    <li>
-      <p>{{entry.date|date:'M d, Y H:i'}}</p>
-      <p>{{entry.text|linebreaks}}</p>
-      <p><a href="{% url 'edit_entry' entry.id %}">Edit entry</a></p>
-    </li>
+    <div class="card mb-3">
+      <div class="card-header bg-dark">
+        <h3 class="text-white">
+          {{entry.date|date:'M d, Y H:i'}}
+          <small>
+            <a href="{% url 'edit_entry' entry.id %}">Edit entry</a>
+          </small>
+        </h3>
+      </div>
+      <div class="card-body">
+        <p>{{entry.text|linebreaks}}</p>
+      </div>
+    </div>
   {% empty %}
     <li>There are no entries, add yours here</li>
   {% endfor %}

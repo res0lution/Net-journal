@@ -1,10 +1,16 @@
 {% extends 'journal_app/base.html' %}
+{% load  bootstrap4  %}
+
+{% block header %}
+  <h2><a href="{% url 'topic' topic.id %}">{{topic}}</a></h2>
+  <h2>Create a new entry:</h2>
+{% endblock header %}
 {% block content %}
-  <p><a href="{% url 'topic' topic.id %}">{{topic}}</a></p>
-  <p>Create a new entry:</p>
   <form action="{% url 'create_entry' topic.id %}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button name="submit">create entry</button>
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button name="submit" class="btn btn-dark font-weight-bold">Create entry</button>
+    {% endbuttons %}
   </form>
 {% endblock content %}

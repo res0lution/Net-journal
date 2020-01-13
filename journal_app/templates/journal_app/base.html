@@ -8,34 +8,42 @@
     <title>Net journal</title>
 
     {% bootstrap_css %}
-    {% bootstrap_javascript %}
+    {% bootstrap_javascript jquery='full' %}
   </head>
-</html>
-<body>
-  <nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="#navbar"
-          aria-expanded="false" aria-controls="navbar"></button>
-        <a class="navbar-brand" href="{% url 'index' %}">Net journal</a>
-      </div>
-
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="{% url 'topics' %}">Topics</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
+  <body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <div class="container">
+      <a class="navbar-brand font-weight-bold" href="{% url 'index' %}">Net journal</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'topics' %}">Topics</a>
+          </li>
           {% if user.is_authenticated %}
-            <li><a href="#">Hello, {{user.username}}</a></li>
-            <li><a href="{% url 'logout' %}">Log out</a></li>
+            <li class="nav-item active"><a class="nav-link" href="#">Hello, {{user.username}}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
           {% else %}
-            <li><a href="{% url 'register' %}">Register</a></li>
-            <li><a href="{% url 'login' %}">Log in</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log in</a></li>
           {% endif %}
-        </ul>
       </div>
-    </div>
-  </nav>
-</body>
+      </div>
+    </nav>
 
-{% block content %}{% endblock content %}
+  <main class="container">
+    <div class="page-header pt-3">
+      {% block header %}{% endblock header %}
+    </div>
+    <div>
+      {% block content %}{% endblock content %}
+    </div>
+  </main>
+</body>
+</html>

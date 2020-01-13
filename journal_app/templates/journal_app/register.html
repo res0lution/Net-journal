@@ -1,10 +1,17 @@
 {% extends 'journal_app/base.html' %}
+{% load  bootstrap4  %}
+
+{% block header %}
+  <h1>Registration</h1>
+{% endblock header %}
 
 {% block content %}
   <form action="{% url 'register'%}" method="post">
     {% csrf_token %}
-    {{form.as_p}}
-    <button name="submit">Register</button>
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button name="submit" class="btn btn-dark font-weight-bold">Register</button>
+    {% endbuttons %}
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
 {% endblock content %}
